@@ -1,0 +1,362 @@
+/* app/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==== Tokens (精簡) ==== */
+:root {
+  --sw-primary: #1f2e3c; /* 深藍主色 */
+  --sw-accent: #d9b37b; /* 金色 */
+  --sw-grey: #c5c9cd;
+  --sw-white: #ffffff;
+  --sw-black: #000000;
+
+  --background: var(--sw-white);
+  --foreground: var(--sw-primary);
+
+  --sw-r-sm: 8px;
+  --sw-r-md: 12px;
+  --sw-r-lg: 16px;
+}
+
+/* ==== Reset ==== */
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family:
+    "Noto Sans TC",
+    "思源黑體",
+    system-ui,
+    -apple-system,
+    "PingFang TC",
+    "Microsoft JhengHei",
+    sans-serif;
+  line-height: 1.6;
+}
+
+/* =========================
+   ✍️ 文字系統（Typography）
+   ========================= */
+
+/* 標題階層（Heading Styles） */
+.sw-h1 {
+  font-size: clamp(
+    40px,
+    6vw,
+    72px
+  ); /* 自適應 H1 標題字級（最大72px，最小40px） */
+  font-weight: 800; /* 粗體強調主標題 */
+  line-height: 1.15; /* 緊密行高讓標題更集中 */
+}
+
+.sw-h2 {
+  font-size: clamp(34px, 4.5vw, 60px); /* H2 次標題 */
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.sw-h3 {
+  font-size: 48px; /* 第三級標題，用於章節或區塊標題 */
+  font-weight: 700;
+}
+
+.sw-h4 {
+  font-size: 36px; /* 常用於區段小標題或段落開頭 */
+  font-weight: 700;
+}
+
+.sw-h5 {
+  font-size: 24px; /* 次要標題，例如卡片標題或小區塊 */
+  font-weight: 700;
+}
+
+.sw-h6 {
+  font-size: 16px; /* 小型標題，用於內文中的標示文字 */
+  font-weight: 600;
+}
+
+/* 內文字級（Paragraph Styles） */
+.sw-p1 {
+  font-size: 14px; /* 一般段落文字大小 */
+  line-height: 1.6;
+}
+
+.sw-p2 {
+  font-size: 12px; /* 較次要的說明文字 */
+  color: #4b5563; /* 偏灰色，降低比重 */
+  line-height: 1.6;
+}
+
+/* 補充文字（Caption / 註解） */
+.sw-caption {
+  font-size: 12px; /* 小字型標註 */
+  color: #6b7280; /* 更淺灰色，常用於副標或提示文字 */
+}
+
+/* ==== Buttons Base ==== */
+.sw-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  padding: 8px 20px;
+  font-size: 14px;
+  border: 1px solid var(--sw-grey);
+  border-radius: 8px;
+  transition:
+    transform 0.15s ease,
+    filter 0.15s ease,
+    box-shadow 0.2s ease;
+}
+
+/* 通用 Hover 動畫 */
+.sw-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.sw-btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) inset;
+}
+
+.sw-btn:focus-visible {
+  outline: 2px solid var(--sw-accent);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------- */
+/* 🟡 金色系列 (Luxury Gold Tone) */
+/* ---------------------------------- */
+
+/* 主按鈕：全圓膠囊 */
+.sw-btn--gold-primary {
+  background: var(--sw-accent);
+  color: var(--sw-black);
+  border-color: var(--sw-accent);
+  border-radius: 9999px;
+}
+
+/* Hover：略亮、有金屬光感 */
+.sw-btn--gold-primary:hover:not(:disabled) {
+  filter: brightness(1.08);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.35);
+}
+
+/* 方形按鈕 */
+.sw-btn--gold-square {
+  background: var(--sw-accent);
+  color: var(--sw-black);
+  border-color: var(--sw-accent);
+  border-radius: 8px;
+}
+.sw-btn--gold-square:hover:not(:disabled) {
+  filter: brightness(1.06);
+  box-shadow: 0 3px 6px rgba(255, 215, 0, 0.25);
+}
+
+/* 停用 */
+.sw-btn--gold-disabled {
+  background: var(--sw-accent);
+  color: var(--sw-black);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---------------------------------- */
+/* ⚪ 灰色系列 (Neutral Comfort Tone) */
+/* ---------------------------------- */
+
+/* 主按鈕：全圓膠囊 */
+.sw-btn--grey-primary {
+  background: var(--sw-grey);
+  color: var(--sw-black);
+  border-color: var(--sw-grey);
+  border-radius: 9999px;
+}
+
+/* Hover：略暗、加輕陰影 */
+.sw-btn--grey-primary:hover:not(:disabled) {
+  filter: brightness(0.93);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* 方形按鈕 */
+.sw-btn--grey-square {
+  background: var(--sw-grey);
+  color: var(--sw-black);
+  border-color: var(--sw-grey);
+  border-radius: 8px;
+}
+.sw-btn--grey-square:hover:not(:disabled) {
+  filter: brightness(0.93);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* 停用 */
+.sw-btn--grey-disabled {
+  background: var(--sw-grey);
+  color: var(--sw-black);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---------------------------------- */
+/* 🔴 紅色系列 (Emergency Dangerous Tone) */
+/* ---------------------------------- */
+
+/* 方形按鈕 */
+.sw-btn--red-square {
+  background: #a52422;
+  color: var(--sw-white);
+  border-color: #a52422;
+  border-radius: 8px;
+}
+
+.sw-btn--red-square:hover:not(:disabled) {
+  filter: brightness(0.8);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* 比較活潑的紅 */
+/* .sw-btn--red-square {
+  background: #f15152;
+  color: var(--sw-white);
+  border-color: #f15152;
+  border-radius: 8px;
+} */
+
+/* --------- */
+/* 黃蕾在用的 */
+/* --------- */
+
+.bg-ticket {
+  background: linear-gradient(
+    180deg,
+    #e1e2e2 0%,
+    #e1e2e2 8%,
+    white 8%,
+    white 100%
+  );
+}
+
+.bg-ticket-side {
+  background: linear-gradient(
+    90deg,
+    #e1e2e2 0%,
+    #e1e2e2 4%,
+    white 4%,
+    white 100%
+  );
+}
+
+/* .bg-ticket:hover {
+  background: linear-gradient(
+    180deg,
+    #eddcc1 0%,
+    #eddcc1 8%,
+    white 8%,
+    white 100%
+  );
+} */
+
+.bg-ticket-red {
+  background: linear-gradient(
+    180deg,
+    #a52422 0%,
+    #a52422 8%,
+    white 8%,
+    white 100%
+  );
+}
+
+.tab-border {
+  border: 1px solid var(--sw-grey);
+  padding: 4px 36px;
+  border-radius: 8px 8px 0 0;
+  background-color: var(--sw-grey);
+  color: var(--sw-black);
+  cursor: pointer;
+}
+
+.tab-border:hover {
+  filter: brightness(1.5);
+}
+
+.tab-border-active {
+  border: 1px solid var(--sw-grey);
+  border-bottom: 1px solid var(--sw-primary);
+  padding: 4px 36px;
+  border-radius: 8px 8px 0 0;
+  background-color: var(--sw-primary);
+  color: var(--sw-white);
+}
+
+.sw-l-input {
+  margin: 0 0 28px 0;
+
+  label {
+    font-size: 14px;
+    font-weight: 400;
+    display: block;
+    border-left: 4px solid var(--sw-accent);
+    padding: 0 0 0 6px;
+    line-height: 16px;
+    margin: 0 0 8px 0;
+  }
+
+  input {
+    display: block;
+    width: 100%;
+    border: 1px solid var(--sw-grey);
+    border-radius: 6px;
+    padding: 4px 8px;
+  }
+
+  select {
+    width: 100%;
+    border: 1px solid var(--sw-grey);
+    border-radius: 6px;
+    padding: 4px 8px;
+    appearance: none;
+    /* option:hover {
+      background-color: var(--sw-accent);
+    } */
+  }
+
+  textarea {
+    width: 100%;
+    border: 1px solid var(--sw-grey);
+    border-radius: 6px;
+    padding: 4px 8px;
+  }
+
+  input:focus,
+  textarea:focus,
+  select:focus {
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+.sw-l-select {
+  /* width: 100%; */
+  border: 1px solid var(--sw-grey);
+  border-radius: 6px;
+  padding: 4px 8px;
+  appearance: none;
+  /* option:hover {
+      background-color: var(--sw-accent);
+    } */
+}
