@@ -1,4 +1,3 @@
-// HotelResultCard.tsx
 'use client';
 
 import {
@@ -14,7 +13,6 @@ import {
   Wifi,
 } from 'lucide-react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { AmenityKey, amenityLabels } from '../interfaces/constants';
 
@@ -30,8 +28,6 @@ interface HotelResultCardProps {
     image?: string;
     amenities?: AmenityKey[];
     busFree?: boolean;
-    roomType?: string;
-    notes?: string;
   };
   onBookClick: () => void;
   isBooking?: boolean;
@@ -42,76 +38,65 @@ export default function HotelResultCard({
   onBookClick,
   isBooking = false,
 }: HotelResultCardProps) {
-  const router = useRouter();
   const [isFavorite, setIsFavorite] = useState(false);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
 
   useEffect(() => {
-    const favorites: number[] = JSON.parse(
-      localStorage.getItem('favorites') || '[]'
-    );
+    const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
     setIsFavorite(favorites.includes(hotel.id));
   }, [hotel.id]);
 
   const toggleFavorite = (e: React.MouseEvent) => {
     e.stopPropagation();
-    const favorites: number[] = JSON.parse(
-      localStorage.getItem('favorites') || '[]'
-    );
+    const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
     const updated = isFavorite
-      ? favorites.filter((id) => id !== hotel.id)
+      ? favorites.filter((id: number) => id !== hotel.id)
       : [...favorites, hotel.id];
     localStorage.setItem('favorites', JSON.stringify(updated));
     setIsFavorite(!isFavorite);
   };
 
   const iconsMap: Record<AmenityKey, React.ReactNode> = {
-    wifi: <Wifi size={16} />,
-    parking: <Car size={16} />,
-    cafe: <Coffee size={16} />,
-    restaurant: <Utensils size={16} />,
-    frontDesk24h: <Clock size={16} />,
-    luggageStorage: <Package size={16} />,
-    shuttleService: <Truck size={16} />,
+    wifi: <Wifi size={14} />,
+    parking: <Car size={14} />,
+    cafe: <Coffee size={14} />,
+    restaurant: <Utensils size={14} />,
+    frontDesk24h: <Clock size={14} />,
+    luggageStorage: <Package size={14} />,
+    shuttleService: <Truck size={14} />,
   };
 
   return (
-    <div className="flex flex-col md:flex-row w-full max-w-4xl items-stretch px-4 bg-white transition rounded">
+    /* 金框緊貼修正：使用 border-[#DCBB87] 並確保 rounded 一致 */
+    <div className="flex flex-col md:flex-row w-full items-stretch rounded shadow-sm overflow-hidden ">
+      {/* 圖片區域：高度會隨右側內容自動撐滿 */}
       <div
-        className="relative w-50 h-40 flex-shrink-0 cursor-pointer"
-        onClick={(e) => {
-          e.stopPropagation();
-          if (hotel.image) setIsImageModalOpen(true);
-        }}
+        className="relative w-full md:w-64 h-48 md:h-auto flex-shrink-0 cursor-pointer"
+        onClick={() => hotel.image && setIsImageModalOpen(true)}
       >
         {hotel.image ? (
           <Image
             src={hotel.image}
             alt={hotel.name}
             fill
-            className="object-cover object-center rounded-lg"
-            onError={(e) => {
-              (e.currentTarget as HTMLImageElement).src =
-                '/images/hotel/fallback.jpeg';
-            }}
+            className="object-cover"
           />
         ) : (
-          <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500 rounded-lg">
+          <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400 text-xs">
             無圖片
           </div>
         )}
-
-        <div className="absolute top-2 right-2 bg-black/70 px-2 py-1 rounded-full flex items-center gap-1 text-xs text-white">
-          <Star size={12} color="#DCBB87" fill="#DCBB87" />
+        <div className="absolute top-2 right-2 bg-black/80 px-2.5 py-1 rounded-lg flex items-center gap-1.5 text-xs text-white font-semibold">
+          <Star size={12} className="text-[#DCBB87] fill-[#DCBB87]" />
           {hotel.rating.toFixed(1)}
         </div>
       </div>
 
-      <div className="flex flex-col flex-1 p-3 gap-2 relative">
-        {/* ❤️ 收藏按鈕（未收藏：金色外框 / 已收藏：金色實心） */}
+      {/* 內容區域 */}
+      <div className="flex flex-col flex-1 p-5 relative min-w-0 bg-white">
         <button
           onClick={toggleFavorite}
-          className="absolute top-2 right-2 w-8 h-8 rounded-full bg-white border border-gray-300 flex justify-center items-center transition"
+          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/80 border border-gray-100 flex items-center justify-center shadow-sm z-10"
         >
           <Heart
             size={16}
@@ -120,89 +105,68 @@ export default function HotelResultCard({
           />
         </button>
 
-        <h3 className="text-gray-900 font-semibold text-lg">{hotel.name}</h3>
-        {hotel.engName && (
-          <p className="text-sm text-gray-600">{hotel.engName}</p>
-        )}
+        <div className="pr-8">
+          <h3 className="text-gray-900 font-bold text-lg leading-tight">
+            {hotel.name}
+          </h3>
+          <p className="text-xs text-gray-400 mt-1">{hotel.engName} | Hotel</p>
+        </div>
 
-        <div className="flex items-center text-gray-500 text-xs gap-1 mt-1">
-          <MapPin size={12} /> {hotel.location}
-          {hotel.distance && <span>・{hotel.distance}</span>}
+        <div className="flex flex-wrap items-center text-gray-500 text-[11px] gap-2 mt-3">
+          <div className="flex items-center gap-1">
+            <MapPin size={12} /> {hotel.location}
+          </div>
           {hotel.busFree && (
-            <span className="ml-2 px-2 py-0.5 rounded-lg bg-[#DCBB87] text-black font-semibold text-xs">
+            <span className="bg-[#DCBB87] text-white px-2 py-0.5 rounded font-bold text-[9px]">
               免費接駁
             </span>
           )}
         </div>
 
-        {hotel.notes && (
-          <p className="text-gray-700 text-sm mt-1">{hotel.notes}</p>
-        )}
+        <div className="flex flex-wrap gap-1.5 mt-4">
+          {hotel.amenities?.map(
+            (key) =>
+              iconsMap[key] && (
+                <div
+                  key={key}
+                  className="bg-gray-50 border border-gray-100 p-1.5 text-gray-600"
+                >
+                  {iconsMap[key]}
+                </div>
+              )
+          )}
+        </div>
 
-        {hotel.amenities && (
-          <div className="flex gap-2 mt-1">
-            {hotel.amenities.map(
-              (key) =>
-                iconsMap[key] && (
-                  <div
-                    key={key}
-                    className="bg-[#F1F1F1] rounded-lg p-1 flex items-center justify-center hover:bg-[#E0D7C1] transition-all duration-200"
-                    style={{ width: 28, height: 28 }}
-                    title={amenityLabels[key]}
-                  >
-                    {iconsMap[key]}
-                  </div>
-                )
-            )}
+        <div className="flex justify-between items-end mt-auto pt-4 border-t border-gray-50 md:border-none">
+          <div className="flex items-baseline gap-1">
+            <span className="text-2xl font-bold text-gray-900">
+              ${hotel.price.toLocaleString()}
+            </span>
+            <span className="text-[10px] text-gray-400 uppercase">/night</span>
           </div>
-        )}
-
-        <div className="flex justify-end items-center gap-3 mt-auto">
-          <div className="text-lg font-bold text-gray-900">
-            ${hotel.price.toLocaleString()}
-          </div>
-          <div className="text-xs text-gray-500 mb-0.5">/night</div>
-
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onBookClick();
-            }}
+            onClick={onBookClick}
             disabled={isBooking}
-            className={`px-4 py-1 font-semibold rounded-lg transition-all duration-300 flex items-center gap-2 shadow-lg cursor-pointer ${
-              isBooking
-                ? 'bg-gray-400 cursor-not-allowed text-white'
-                : 'bg-[#1E2A33] text-[#DCBB87] hover:bg-[#303D49] border-2 border-[#DCBB87]'
-            }`}
+            className="rounded-lg px-8 py-2 text-sm font-bold bg-[#1E2A33] text-[#DCBB87] border border-[#DCBB87] hover:bg-[#2c3e4a] transition-all"
           >
-            {isBooking ? '處理中...' : '預訂'}
+            {isBooking ? '...' : '預訂'}
           </button>
         </div>
       </div>
 
+      {/* 圖片預覽彈窗 */}
       {isImageModalOpen && hotel.image && (
         <div
-          className="fixed inset-0 z-50 bg-black/90 flex justify-center items-center backdrop-blur-sm"
+          className="fixed inset-0 z-[100] bg-black/90 flex justify-center items-center backdrop-blur-sm p-4"
           onClick={() => setIsImageModalOpen(false)}
         >
-          <div className="relative max-w-7xl max-h-[90vh] p-4">
+          <div className="relative w-full max-w-4xl aspect-video">
             <Image
               src={hotel.image}
-              alt={hotel.name + ' - 放大預覽'}
-              width={1200}
-              height={800}
-              className="object-contain w-full h-full rounded-lg"
-              onClick={(e) => e.stopPropagation()}
+              alt="preview"
+              fill
+              className="object-contain"
             />
-            <button
-              className="absolute top-5 right-6 text-white text-xl p-2 rounded-full bg-black/50 hover:bg-black/80 transition"
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsImageModalOpen(false);
-              }}
-            >
-              &times;
-            </button>
           </div>
         </div>
       )}

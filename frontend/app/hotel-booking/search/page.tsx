@@ -223,7 +223,7 @@ function SearchPageContent() {
 
   return (
     <div
-      className="min-h-screen w-full bg-cover bg-center bg-no-repeat relative"
+      className="min-h-screen w-full bg-cover bg-center bg-no-repeat relative overflow-x-hidden"
       style={{ backgroundImage: "url('/images/hotel/bg1.jpeg')" }}
     >
       <div className="flex flex-col w-full h-full bg-black/70 min-h-screen p-4 md:p-8">
@@ -237,7 +237,8 @@ function SearchPageContent() {
         />
 
         <div className="flex-1 flex flex-col md:flex-row w-full max-w-6xl mx-auto mt-4 md:mt-6">
-          <div className="w-auto flex-shrink-0 h-full">
+          {/* 側邊欄：手機滿版，桌機固定寬 */}
+          <div className="w-full md:w-72 flex-shrink-0 h-full px-0 md:px-0">
             <FilterSidebar
               isMobileOpen={showFilter}
               onClose={() => setShowFilter(false)}
@@ -253,7 +254,8 @@ function SearchPageContent() {
             />
           </div>
 
-          <main className="flex-1 overflow-y-auto space-y-6 px-4 md:px-8 flex flex-col items-center">
+          {/* 飯店列表：保持 padding，不要左右捲動 */}
+          <main className="flex-1 overflow-y-auto space-y-6 px-4 md:px-8 flex flex-col">
             {filteredHotels.length === 0 ? (
               <div className="text-center py-12 text-gray-300">
                 <p className="text-lg mb-4">沒有符合條件的飯店</p>
