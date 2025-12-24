@@ -1,6 +1,5 @@
 'use client';
 
-// @ts-ignore
 import 'leaflet/dist/leaflet.css';
 import {
   Car,
