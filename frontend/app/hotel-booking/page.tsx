@@ -203,7 +203,7 @@ export default function Page() {
 
       <div className="bg-white/90 py-[24] rounded-lg shadow-md mx-50">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl font-bold text-gray-800 mb-3 text-center">
+          <h2 className="text-2xl font-bold text-gray-800 mb-2 py-4 text-center">
             TOP 5 附近優質飯店
           </h2>
           <div className="[grid-template-columns:repeat(auto-fit,minmax(220px,0fr))] justify-center grid gap-y-2 gap-x-2 py-3 px-2">
